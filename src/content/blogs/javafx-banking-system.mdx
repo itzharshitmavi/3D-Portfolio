@@ -1,0 +1,31 @@
+---
+title: "Banking Management System: Applying OOP to Account Workflows"
+publishedAt: "2026-11-25"
+summary: "An introduction to JavaFX desktop banking, database-backed records and the principles behind safe transfers."
+author: "Harshit Mavi"
+category: "Projects"
+tags: ["Java", "JavaFX", "SQL", "OOP"]
+image: "/assets/projects-screenshots/banking/cover.png"
+---
+
+My Banking Management System is a JavaFX desktop project that applies object-oriented programming to account and transaction workflows. Its repository includes a Maven project and a database file, while the résumé identifies authentication, account management and transaction processing as core features.
+
+## A domain model before a screen
+
+A bank account has data and rules. A transaction represents an operation involving money. A user has access to particular accounts. Those concepts should be represented separately from labels and buttons in the desktop UI. This makes the business logic easier to test without opening a window.
+
+## Why transaction boundaries matter
+
+Consider moving money from one account to another. In a reliable implementation, the debit and credit must be consistent: if either fails, neither should be committed. Amounts should use a precise monetary representation rather than binary floating-point arithmetic. Validation should reject invalid amounts and check the relevant account rules before saving changes. These are engineering considerations for financial applications, not a claim that this educational project meets production banking standards.
+
+## Working with JavaFX
+
+A useful desktop architecture separates views, controllers and persistence logic. Controllers can coordinate input, but should not become the only home for business rules. Slow database work also needs care so that it does not make the UI unresponsive. The Maven build and repository structure provide a starting point for reproducing the application.
+
+## Connection to my ERP work
+
+This project helped establish the context for my interest in finance modules. LedgerX needs more comprehensive financial concepts, including auditability and accounting consistency, but the underlying question is similar: how do we represent business changes in a way that can be checked and explained?
+
+## Explore the source
+
+[View the repository on GitHub](https://github.com/itzharshitmavi/BankingSystem).

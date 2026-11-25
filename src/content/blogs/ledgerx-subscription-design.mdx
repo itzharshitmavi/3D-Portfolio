@@ -1,0 +1,31 @@
+---
+title: "LedgerX SaaS: Designing Subscription Plans and Entitlements"
+publishedAt: "2026-11-25"
+summary: "A proposed three-tier subscription model that keeps billing, permissions and module access separate."
+author: "Harshit Mavi"
+category: "Startup"
+tags: ["LedgerX", "SaaS", "Subscriptions"]
+image: "/assets/projects-screenshots/ledgerx/cover.png"
+---
+
+A SaaS subscription needs to answer a practical question: what capabilities has an organization purchased, and who within that organization is allowed to use them? For LedgerX, I want plan access to be explicit rather than scattered across page components.
+
+## Three proposed tiers
+
+- **Essentials:** core sales, purchasing, inventory and basic reporting for a small team.
+- **Growth:** deeper finance workflows, CRM, additional reporting and broader operational capabilities.
+- **Enterprise:** advanced automation, governance, integrations and higher service limits, subject to implementation and customer needs.
+
+These are working names and illustrative feature groupings, not published pricing or commitments. Customer feedback should determine the final packages.
+
+## Entitlements are not permissions
+
+A subscription might allow the accounting module, while only authorized staff should be able to post journal entries. Both conditions need to pass. The server should evaluate the active plan, organization membership, user role and relevant resource scope before performing an operation. A locked button is useful feedback, but it is not an access-control mechanism.
+
+## Handling subscription changes
+
+A billing integration should distinguish trial, active, past-due and cancelled states. Webhook events may arrive more than once or out of order; idempotent processing and reconciliation can prevent inconsistent access. An upgrade can enable new capabilities, while a downgrade should not silently delete existing records. A read-only or export policy can help customers retain access to their data during transitions.
+
+## What I want to test
+
+The important scenarios include direct API access to a restricted module, expiry during an active session, plan changes, billing event retries and access by different roles in the same organization. This design is part of the startup roadmap. Pricing, payment provider selection and commercial availability remain open decisions.

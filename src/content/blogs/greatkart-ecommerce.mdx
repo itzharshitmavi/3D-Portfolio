@@ -1,0 +1,31 @@
+---
+title: "GreatKart: Designing the E-Commerce Journey"
+publishedAt: "2026-11-25"
+summary: "A project case study on catalog browsing, responsive layouts and the transition from cart to checkout."
+author: "Harshit Mavi"
+category: "Projects"
+tags: ["Django", "E-commerce", "Frontend"]
+image: "/assets/projects-screenshots/greatkart/cover.png"
+---
+
+GreatKart is my e-commerce project from 2025. It gave me a practical context for thinking about how customers discover products and move through a purchase flow. The repository contains a Django project directory, while my résumé highlights the responsive interface and cart and checkout experience.
+
+## Design the journey, not just the homepage
+
+A storefront needs to guide the customer from browsing to a product detail, then to the cart and checkout. Each step should make the next action obvious. Product cards need consistent information hierarchy, and the experience should adapt to narrow mobile screens without forcing horizontal scrolling. CSS Grid and Flexbox help handle these layouts.
+
+## Cart state and business rules
+
+A shopping cart is a temporary representation of purchase intent. Quantities, product identifiers and prices should be handled consistently. In a production store, the server must calculate authoritative totals and verify current availability when placing an order. Prices shown in a browser should not be accepted as proof of the price to charge.
+
+## An inventory question that matters
+
+What happens when an item is added to a cart but goes out of stock before checkout? A robust application needs a policy for reservations, expiry and inventory updates. The interface should clearly explain the result instead of producing an unexplained error. That is a design consideration for future hardening, not a claim that GreatKart implements every such policy.
+
+## What this project represents
+
+GreatKart is a useful step between front-end design and business-oriented web applications. The same concerns appear in ERP sales workflows: trustworthy product data, accurate totals and predictable order status. The source is available for exploration, and real payment processing would require separate verification before use in a live business.
+
+## Explore the source
+
+[View the repository on GitHub](https://github.com/itzharshitmavi/GREATKART).

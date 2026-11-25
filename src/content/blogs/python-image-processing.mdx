@@ -1,0 +1,31 @@
+---
+title: "ImageProcessing: Understanding Images as Data"
+publishedAt: "2026-11-25"
+summary: "A practical learning note on pixel arrays, transformations and testing image-processing pipelines."
+author: "Harshit Mavi"
+category: "Engineering"
+tags: ["Python", "Image Processing", "Data Science"]
+image: "/assets/projects-screenshots/imageprocessing/cover.png"
+---
+
+ImageProcessing is one of the Python repositories in my portfolio. Working with images is an interesting bridge between programming and data science because a visual result can be represented as numerical data. This article is a general engineering note inspired by that repository, not a claim about its specific algorithms.
+
+## Pixels and representations
+
+A grayscale image can be represented as a two-dimensional array of intensity values. A color image often has additional channels. The channel order, numeric range and data type are important: an operation expecting values from zero to one can produce surprising results if it receives integer values from zero to 255.
+
+## Build a small pipeline
+
+A typical exercise is to load an image, validate its dimensions, apply a transformation and save or display the output. Resizing, cropping, brightness adjustments and grayscale conversion are examples worth exploring. Each step should have an explicit input and output so that it can be tested independently. A transformation intended for photos may behave differently on transparent or grayscale images.
+
+## Test before interpreting results
+
+Visual inspection is helpful but not enough. A small synthetic image can make the expected pixel values obvious. Shape, range and type checks can catch mistakes even when an output looks plausible. File handling should also account for corrupted inputs and unsupported formats.
+
+## Connection to AI
+
+Image preprocessing is relevant to machine learning because training and inference need compatible inputs. The wrong normalization or channel order can degrade a model's predictions. I view these fundamentals as useful preparation for exploring computer vision and document processing later.
+
+## Explore the source
+
+[View the repository on GitHub](https://github.com/itzharshitmavi/ImageProcessing).

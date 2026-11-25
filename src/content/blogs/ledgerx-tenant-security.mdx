@@ -1,0 +1,27 @@
+---
+title: "Designing Multi-Tenant Security for LedgerX"
+publishedAt: "2026-11-25"
+summary: "Organization isolation, role-based permissions and auditable financial operations as core SaaS design requirements."
+author: "Harshit Mavi"
+category: "Startup"
+tags: ["LedgerX", "Security", "RBAC", "SaaS"]
+image: "/assets/projects-screenshots/ledgerx/cover.png"
+---
+
+Multi-tenancy lets separate businesses use the same software without sharing private business records. In an ERP, a mistake in organization isolation can expose invoices, payroll or customer information. That makes security part of the product design rather than a final checklist.
+
+## Identity, membership and permissions
+
+Authentication identifies the signed-in user. Membership establishes which organizations that user belongs to. Authorization determines what they can do within a particular organization. Those checks must happen on the server, even if the frontend hides inaccessible navigation items.
+
+For example, a sales employee may create an order but not approve an accounting adjustment. An accountant may record a payment but should not necessarily change subscription settings. An organization owner can manage memberships, while platform administration should be a distinct responsibility. These roles are design examples, not an exhaustive list of implemented permissions.
+
+## Tenant isolation in data access
+
+A business identifier can scope tenant-owned records and queries. It should come from verified membership context, not a trusted-looking value supplied by the client. Database row-level security could offer a second line of defense, provided connection and transaction context are handled correctly. Cross-tenant tests should explicitly attempt to retrieve or modify another organization's data.
+
+## Audit and recovery
+
+Sensitive operations should record who performed the action, what changed, when it occurred and which organization it affected. Logs should avoid exposing credentials or unnecessary personal data. Permission revocation, expired sessions and concurrent updates deserve dedicated tests.
+
+LedgerX is under development. I intend to treat tenant isolation, permission checks and auditability as release gates; a design note alone is not evidence of a completed security review.

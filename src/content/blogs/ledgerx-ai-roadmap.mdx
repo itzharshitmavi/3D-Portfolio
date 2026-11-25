@@ -1,0 +1,27 @@
+---
+title: "LedgerX AI Roadmap: From Business Data to Useful Decisions"
+publishedAt: "2026-11-25"
+summary: "How invoice assistance, business insights and controlled automation could fit into an ERP without giving models uncontrolled access."
+author: "Harshit Mavi"
+category: "Startup"
+tags: ["LedgerX", "AI Agents", "LLM"]
+image: "/assets/projects-screenshots/ledgerx/cover.png"
+---
+
+AI in an ERP should reduce repetitive work and make information easier to understand. It should not replace the accounting rules or permission checks that protect a business. My goal with LedgerX is to introduce AI where its output can be inspected and corrected.
+
+## Start with narrow tasks
+
+Invoice extraction is a useful candidate: an assistant could identify supplier details, line items and totals from a document and populate a draft. The application would still validate taxes, currencies and arithmetic. A person would review the draft before posting anything. Business insights could similarly summarize approved reporting data rather than invent figures.
+
+## A controlled agent architecture
+
+I want the AI layer to receive only the information needed for the request, scoped to the active organization and role. It should call well-defined tools with validated arguments. High-impact actions such as posting financial entries or changing supplier payment details need explicit approval and deterministic server rules.
+
+An agent should be able to decline a task when information is missing. Documents and external content must be treated as untrusted data, not as instructions that can override access policies. This is important because invoices and notes may contain unexpected text.
+
+## Measuring usefulness
+
+I would evaluate extracted field accuracy, correction rates, grounded answers, response latency and cost. Test cases should include incomplete documents, ambiguous questions and attempts to access another organization's information. A fallback manual workflow should remain usable when an AI provider is unavailable.
+
+These features are planned or being explored, not a claim that automated invoice processing and financial intelligence are already released. The HCP CRM project provides a smaller example of the review-before-save pattern that informs this direction: [read the case study](/blogs/ai-first-crm-hcp).

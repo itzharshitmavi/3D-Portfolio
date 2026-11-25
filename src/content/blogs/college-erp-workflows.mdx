@@ -1,0 +1,31 @@
+---
+title: "Beyond Attendance: Designing Academic Workflows in College ERP"
+publishedAt: "2026-11-25"
+summary: "How academic roles, semester progression, fee records and payment verification connect inside a Django ERP."
+author: "Harshit Mavi"
+category: "Projects"
+tags: ["ERP", "Django", "Python"]
+image: "/assets/projects-screenshots/college-erp/cover.png"
+---
+
+College ERP is a Django application I built to bring academic operations into one system. Its public repository now describes a wider set of workflows than attendance alone, including academic progression and fee management. The project won first prize at the Technophilia Technical Project Expo in 2026.
+
+## Designing around roles
+
+The administrator maintains academic structure and approves registrations. Teachers interact with the academic records and classes they manage. Students see their own schedules, results and requests. A clear separation between these responsibilities makes each dashboard more relevant, but backend access checks remain essential.
+
+## Academic records change over time
+
+A semester promotion is not just an update to a number. The new academic period must be associated with the right cohort while preserving previous attendance, marks and fee records. Designing for historical records avoids the temptation to overwrite information that is still needed for reports. The repository documents administrative controls for academic sessions and progression.
+
+## Financial records need their own lifecycle
+
+The current repository documents a fee ledger, offline receipt handling and Razorpay integration. A payment interface should not mark an invoice paid merely because a browser displays a success message. The server must verify the payment against the expected amount and order, and handle duplicate notifications safely. Configuration and payment-provider credentials are needed for a real integration.
+
+## What this means for larger systems
+
+A recurring principle is that user-facing features must reflect consistent underlying state. The relationship between registration, course allocation and semester progression is similar to the relationship between orders, invoices and payments in business ERP software. This project is a useful foundation for the questions I am exploring in LedgerX. The public README describes the supported features; it is not an independent production audit.
+
+## Explore the source
+
+[View the repository on GitHub](https://github.com/itzharshitmavi/College-ERP).

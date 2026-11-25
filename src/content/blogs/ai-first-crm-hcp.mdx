@@ -1,0 +1,31 @@
+---
+title: "From Conversation to Structured Data: Building an AI-First HCP CRM"
+publishedAt: "2026-11-25"
+summary: "A React and FastAPI case study on natural-language interaction logging with LangGraph and human review."
+author: "Harshit Mavi"
+category: "Projects"
+tags: ["AI Agents", "FastAPI", "React", "LangGraph"]
+image: "/assets/projects-screenshots/ai-crm/cover.png"
+---
+
+Healthcare professional interaction management involves a mix of structured fields and free-text visit notes. In my AI-first CRM module, I wanted to make the process of logging those interactions less repetitive without removing control from the representative.
+
+## Two interfaces, one workflow
+
+The application pairs a conventional interaction form with a chat panel. A representative can enter details manually or describe an interaction in natural language. The assistant interprets the notes and proposes structured values for review in the form. The representative then saves the reviewed record through the regular API.
+
+This separation is deliberate: language-model output is an editable suggestion, not a database transaction. In the public repository the backend uses FastAPI, Pydantic, SQLAlchemy and LangGraph with a Groq-backed model. The frontend uses React and form state management, rather than the Redux approach originally proposed in the brief.
+
+## Why validation matters
+
+An interaction may include a date, a professional's name, topics and a suggested next step. Missing information must not become invented facts. The server should validate the shape of the final record, and the user should be able to change or reject the model's suggestion. Model-generated contextual briefings should not be mistaken for verified professional records; the repository documents that distinction.
+
+## What I would improve next
+
+I would evaluate extraction quality on synthetic examples, add stronger permission boundaries for deployment, and test the manual workflow when the model service is unavailable. This is an application prototype, not a clinically validated or regulatory-certified product.
+
+The most useful idea here is reusable: AI can assist with drafting while deterministic application logic remains responsible for saving business data.
+
+## Explore the source
+
+[View the repository on GitHub](https://github.com/itzharshitmavi/ai-first-crm-hcp).

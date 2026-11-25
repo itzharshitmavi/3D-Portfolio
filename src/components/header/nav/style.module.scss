@@ -1,0 +1,29 @@
+.nav {
+  overflow: hidden;
+
+  .wrapper {
+    position: relative;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    max-height: calc(100dvh - 130px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .container {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  .nav {
+    .wrapper {
+      margin-bottom: 0px;
+      justify-content: space-between;
+    }
+  }
+}

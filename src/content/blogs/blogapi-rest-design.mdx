@@ -1,0 +1,39 @@
+---
+title: "BlogAPI and the Fundamentals of REST API Design"
+publishedAt: "2026-11-25"
+summary: "A learning note on resource modeling, HTTP semantics and predictable API responses, inspired by my Python repository."
+author: "Harshit Mavi"
+category: "Engineering"
+tags: ["Python", "REST API", "Backend"]
+image: "/assets/projects-screenshots/blogapi/cover.png"
+---
+
+BlogAPI is a Python repository in my GitHub portfolio. It provides a starting point for discussing the design of resource-oriented APIs. This article describes the principles I want to apply to such projects, rather than documenting endpoints that have not been inspected in the source.
+
+## Think in resources
+
+A blog post has a title, body, identity and lifecycle. An API can express operations through a collection of posts and individual post identifiers. For example, a hypothetical design could expose the following routes:
+
+```text
+GET    /posts
+POST   /posts
+GET    /posts/:id
+PATCH  /posts/:id
+DELETE /posts/:id
+```
+
+These are illustrative routes, not a verified description of the repository. HTTP methods and response status codes help clients understand what operation succeeded or failed. Validation errors should be clear enough for the client to display a useful message.
+
+## Design for safe access
+
+Public reading and authenticated editing are different capabilities. The API must check ownership or permission for mutations and should never rely on the browser to enforce that rule. Pagination can prevent an unbounded list response, while stable sorting makes page navigation predictable.
+
+## Testing the contract
+
+A useful suite covers empty lists, missing resources, invalid bodies, unauthorized edits and successful creation. A well-documented request and response format helps a frontend developer integrate without reading every backend function. Tests should focus on observable behavior as well as implementation details.
+
+The skills behind a small content API are transferable to CRM and ERP applications: consistent resource modeling, validation, predictable errors and authorization. Those are the foundations I want to strengthen across my Python work.
+
+## Explore the source
+
+[View the repository on GitHub](https://github.com/itzharshitmavi/BlogAPI).

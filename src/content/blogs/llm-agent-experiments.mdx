@@ -1,0 +1,31 @@
+---
+title: "Exploring LLM Applications and AI Agents"
+publishedAt: "2026-11-25"
+summary: "What I want to learn from an AI-agent collection: tool boundaries, structured output, evaluation and responsible automation."
+author: "Harshit Mavi"
+category: "Engineering"
+tags: ["AI Agents", "LLM", "Python"]
+image: "/assets/projects-screenshots/llm-apps/cover.png"
+---
+
+My GitHub profile includes a collection of LLM applications for everyday tasks. I see it as a resource for exploring how language models can be combined with tools and application workflows. A collection can include examples from other authors, so this article is about learning from the material, not claiming original authorship of every example.
+
+## When a chatbot becomes a workflow
+
+A basic model call turns a prompt into text. An agent-style workflow may also decide which tool to call, receive results and continue toward a goal. The distinction matters because tools can access data or cause changes. A useful architecture defines what each tool is allowed to do, validates its arguments and places limits on the number of steps.
+
+## Structured output and trust
+
+An application can request structured fields instead of free-form prose. A parser or schema validator can then check the result before it is shown or passed to other code. Valid syntax does not guarantee factual correctness, so responses may also need evidence, domain validation and human review.
+
+## Evaluate on real tasks
+
+A small evaluation dataset can include ordinary requests, incomplete inputs and conflicting instructions. Useful measurements include task completion, factual grounding, latency and cost. A failed tool call should produce a clear recovery path rather than a fabricated result. Secrets and privileged data should remain outside prompts whenever possible.
+
+## Connecting experiments to a product
+
+The AI-first HCP CRM demonstrates a narrower use of natural-language extraction and reviewed form data. LedgerX could apply a similar approach to invoice drafts and insights. My priority is to make AI useful inside a controlled business process rather than add autonomy for its own sake.
+
+## Explore the source
+
+[View the repository on GitHub](https://github.com/itzharshitmavi/awsome-LLM-model-apps-for-daily-uses).

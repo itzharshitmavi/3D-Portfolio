@@ -1,0 +1,31 @@
+---
+title: "UsePopcorn: Building a Movie Discovery Experience with React"
+publishedAt: "2026-11-25"
+summary: "Managing search, API results, ratings and a persistent watched list in a React single-page app."
+author: "Harshit Mavi"
+category: "Projects"
+tags: ["React", "JavaScript", "REST API"]
+image: "/assets/projects-screenshots/usepopcorn/cover.png"
+---
+
+UsePopcorn is a React application for discovering movies and maintaining a personal watched list. It uses the OMDb API for movie information, giving a small application a realistic dependency on an external data source.
+
+## State has different lifetimes
+
+A search query is temporary interface state. A selected movie controls what the user is inspecting. A watched list is longer-lived personal data. Treating those as separate concerns makes it easier to reason about the UI. The résumé describes a persistent watched list; an implementation using browser storage should consider missing or malformed saved data and support an empty state.
+
+## Working with an external API
+
+The network introduces uncertainty. A request can fail, a movie may not exist or a user may change the query before an earlier request finishes. A robust search interface distinguishes loading, empty and error states. Cancelling outdated requests or checking their identity before updating the UI can prevent old responses from replacing newer results.
+
+The repository documents a React application built with Create React App. That setup is part of the project's history; a future modernization could evaluate a newer build tool without changing the user experience.
+
+## Designing for personal choice
+
+External movie information and personal ratings have different meanings. The user should be able to save a title, assign a rating and remove it without affecting the source movie data. A stable movie identifier is a better key than a title that might be shared by several films.
+
+UsePopcorn illustrates a pattern that appears in larger applications: separate the remote source of truth, temporary interaction state and user-owned records. The project is small enough to explore each concern clearly.
+
+## Explore the source
+
+[View the repository on GitHub](https://github.com/itzharshitmavi/UsePopcorn).

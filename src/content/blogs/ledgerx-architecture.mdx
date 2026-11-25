@@ -1,0 +1,27 @@
+---
+title: "LedgerX Engineering: Designing a Modular Cloud-Native ERP"
+publishedAt: "2026-11-25"
+summary: "A proposed architecture for connecting Next.js, ASP.NET Core and PostgreSQL without losing clear business boundaries."
+author: "Harshit Mavi"
+category: "Startup"
+tags: ["LedgerX", "Architecture", "PostgreSQL"]
+image: "/assets/projects-screenshots/ledgerx/cover.png"
+---
+
+An ERP has to preserve business meaning across modules. An invoice is not just a row in a database: it belongs to a customer, may reference an order and can affect accounting and stock. LedgerX is being designed around these relationships.
+
+## Choosing clear responsibilities
+
+My current product stack includes Next.js, React, PostgreSQL and ASP.NET Core in the intended architecture. The frontend should present workflows, the business services should enforce rules and the database should protect critical data relationships. A service layer makes it easier to keep validation independent of individual screens.
+
+A sensible early approach is a modular application rather than creating a separate microservice for every feature. Finance, inventory, sales and purchasing can have explicit boundaries while sharing one reliable persistence layer. If later usage proves that a module needs independent scaling, that boundary provides a starting point for extraction.
+
+## A sale as a workflow
+
+Consider a sales order with two items. The system should check organization access, validate quantities and prices, then save the order. Posting an invoice is a separate business transition, with its own validation. Payment recording and inventory movements should be coordinated so retries do not duplicate effects. Database transactions are useful when a group of changes must succeed or fail together.
+
+## Engineering for change
+
+Schema migrations need to be repeatable, and API contracts need to make errors predictable. I want tests around the rules that connect modules, especially invalid state transitions and duplicate submissions. Metrics, logs and backup recovery will matter as the product approaches deployment.
+
+These are architecture directions, not confirmation that each service is production-ready. The immediate goal is a small number of dependable, end-to-end workflows. See [the startup vision](/blogs/ledgerx-startup-vision) for the product context.

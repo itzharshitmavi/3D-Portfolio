@@ -1,0 +1,29 @@
+---
+title: "Hospital Management System: My Early Desktop Application"
+publishedAt: "2026-11-25"
+summary: "A look at JavaFX, SQL and organizing patient, doctor and appointment records in one application."
+author: "Harshit Mavi"
+category: "Projects"
+tags: ["Java", "JavaFX", "SQL"]
+image: "/assets/projects-screenshots/hospital/cover.png"
+---
+
+The Hospital Management System is one of my earlier Java desktop projects. Its goal is to organize patient, doctor and appointment management through a database-backed interface. The repository includes a JavaFX application and a hospital SQL file.
+
+## Model the relationships
+
+An appointment connects a patient, a doctor and a scheduled time. A doctor may be associated with many appointments, and a patient may return for multiple visits. Giving those relationships explicit identifiers makes updates and retrieval more predictable than storing everything in one large text field.
+
+## Make everyday actions predictable
+
+The interface should make it clear how to find records, create an appointment and correct information. Input validation matters because a record with a missing or invalid identifier can create problems later. A data access layer can keep SQL queries separate from JavaFX controller code. Database constraints can support application validation rather than relying entirely on the interface.
+
+## Privacy and future improvements
+
+Medical information deserves careful handling. A production healthcare system would require much more than a desktop CRUD interface, including role-based permissions, secure storage, audit records, backups and appropriate privacy compliance. A scheduling system should also consider conflicting appointments and cancelled visits. These are future-oriented engineering requirements, not claims about the current repository.
+
+This project represents a foundation in Java, relational data and desktop UI development. Moving from standalone record management toward larger web systems has made those same fundamentals even more relevant.
+
+## Explore the source
+
+[View the repository on GitHub](https://github.com/itzharshitmavi/HospitalManagementSystem).
