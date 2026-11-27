@@ -199,7 +199,13 @@ export default function KeyboardScene({ maxDpr }: { maxDpr: number }) {
         <div className="pointer-events-none fixed inset-x-3 bottom-4 sm:bottom-8 z-20 text-center text-foreground">
           <p className="sr-only">{available ? `${total.toLocaleString("en-US")} keyboard presses by all visitors` : "Shared keyboard count unavailable"}</p>
           <div aria-live="polite" className="mx-auto mb-2 max-w-lg min-w-0 rounded-lg bg-background/90 px-3 py-2 shadow-sm">
-            <p className="text-base sm:text-xl font-semibold leading-snug">{selected?.label ?? "Explore my skills"}</p>
+            <div className="flex items-center justify-center gap-3">
+              {selected && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={selected.icon} alt="" width={44} height={44} className="size-10 shrink-0 object-contain sm:size-11" />
+              )}
+              <p className="min-w-0 text-base sm:text-xl font-semibold leading-snug [overflow-wrap:anywhere]">{selected?.label ?? "Explore my skills"}</p>
+            </div>
             {selected && <p className="text-[10px] text-muted-foreground">{SKILLS[selected.name as keyof typeof SKILLS]?.source === "additional" ? "Additional technology" : "Résumé skill"}</p>}
             <p className="mt-1 text-xs sm:text-sm leading-relaxed text-muted-foreground">
               {selected?.shortDescription ?? "Hover, tap, or press a key"}

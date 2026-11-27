@@ -43,7 +43,7 @@ export type KeyboardScene = {
 
 // Geometry contract of assets/keyboard/keycaps.glb, in key-width units.
 const KIT = {
-  pitch: 1.04468, keyY: 1.21117, keyHeight: 0.7629, logoY: 0.13985,
+  pitch: 1.04468, keyY: 1.21117, keyHeight: 0.7629, logoY: 0.153,
   keyTop: 0.13102987408638,
   cutX: 3.189, cutZ: 2.053, halfW: 3.67448, halfD: 2.57744,
 };
@@ -161,15 +161,15 @@ export function createKeyboardScene(skills: readonly KeyboardSkill[], columns = 
     const nodeId = model(skill.name, "0", materialId, motionId);
     if (skill.icon) {
       const iconId = newId("as");
-      doc.assets[iconId] = { id: iconId, kind: "texture", name: skill.icon, hash: `icon-${skill.name}`, size: 0 };
+      doc.assets[iconId] = { id: iconId, kind: "texture", name: skill.icon, hash: `icon-v2-${skill.name}`, size: 0 };
       const logoMaterial = material(`Logo ${skill.name}`, {
         color: "#ffffff", roughness: 0.6, transparent: true,
         maps: { map: iconId, normalMap: null, roughnessMap: null },
       });
       add({ id: newId("nd"), name: `Logo ${skill.name}`, type: "mesh", materialId: logoMaterial,
-        geometry: { kind: "plane", params: { width: 0.52, height: 0.52 } },
+        geometry: { kind: "plane", params: { width: 0.74, height: 0.74 } },
         transform: { ...transform([0, KIT.logoY, 0]), rotation: [-Math.PI / 2, 0, 0] },
-        visible: true, castShadow: false, receiveShadow: true, children: [] }, nodeId);
+        visible: true, castShadow: false, receiveShadow: false, children: [] }, nodeId);
     }
     const pressedStateId = newId("st");
     doc.states[pressedStateId] = { id: pressedStateId, nodeId, name: "Pressed", overrides: {

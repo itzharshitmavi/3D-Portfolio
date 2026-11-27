@@ -3,6 +3,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Euler, Quaternion } from "three";
 import type { ChibiSceneApi, Vec3 } from "@chibi3d/runtime";
 import type { KeyboardScene } from "./scene";
+import { skillsBoardScale, skillsBoardYaw, revealStagger } from "./view-fit";
 
 export type KeyboardSection = "hero" | "skills" | "projects" | "contact";
 const SCROLL_SECTIONS = [
@@ -77,7 +78,9 @@ export function createKeyboardMotion(
     const mobile = window.innerWidth < 768;
     const fit = Math.min(1, window.innerWidth / window.innerHeight * 1.05);
     const [centerX, centerY, centerZ] = scene.document.camera.target;
-    const size = fit * (section === "hero" ? 0.8 : section === "contact" ? 0.75 : section === "skills" ? (mobile ? 0.88 : 1.05) : 0.95);
+    const size = section === "skills"
+      ? skillsBoardScale(window.innerWidth, window.innerHeight)
+      : fit * (section === "hero" ? 0.8 : section === "contact" ? 0.75 : 0.95);
     const right = !mobile && section === "hero" ? 2.5 : !mobile && section === "contact" ? 3.8 : 0;
     const up = mobile && section === "hero" ? -1.8 : section === "contact" ? -0.8 : 0;
     return {
@@ -89,7 +92,7 @@ export function createKeyboardMotion(
       },
       rotation: section === "projects" || (mobile && section === "contact")
         ? { x: Math.PI, y: Math.PI / 3, z: Math.PI }
-        : { x: 0, y: section === "skills" ? (mobile ? Math.PI / 6 : Math.PI / 12) : 0, z: 0 },
+        : { x: 0, y: section === "skills" ? skillsBoardYaw(mobile) : 0, z: 0 },
       scale: { x: size, y: size, z: size },
     };
   };
@@ -107,7 +110,9 @@ export function createKeyboardMotion(
     for (const [value, destination] of [[position, target.position], [rotation, target.rotation], [scale, target.scale]] as const) {
       sectionTweens.push(gsap.to(value, { ...destination, duration: immediate ? 0 : 1, ease: "power1.out", overwrite: true, onUpdate: applyPose }));
     }
-    api.setNodeVisible(scene.labelsId, next === "skills");
+    // The responsive HTML detail panel is the single readable skill label.
+    // Avoid duplicate floating 3D text competing with the larger board.
+    api.setNodeVisible(scene.labelsId, false);
     showCounter(next === "skills" && inSkills());
     if (next === "hero") {
       // The legacy restart() skips the configured 2.5s delay. Keep the live
@@ -211,14 +216,15 @@ export function createKeyboardMotion(
       }));
       if (section !== "contact") scene.keys.forEach((key, index) => {
         const offset = keyRevealOffsets[index];
-        // Original reveal: 900ms wait, 70ms per key, then a 100ms hold before dropping.
+        // Preserve the stagger without making an expanded 67-key board take 6 seconds.
+        const stagger = revealStagger(scene.keys.length);
         offset.y = (200 - 50) / 296.741333;
         api.setNodeVisible(key.motionId, false);
         applyKey(index);
-        revealTweens.push(gsap.delayedCall(0.9 + index * 0.07, () => {
+        revealTweens.push(gsap.delayedCall(0.9 + index * stagger, () => {
           api.setNodeVisible(key.motionId, true);
         }));
-        revealTweens.push(gsap.to(offset, { y: 0, delay: 1 + index * 0.07,
+        revealTweens.push(gsap.to(offset, { y: 0, delay: 1 + index * stagger,
           duration: 0.5, ease: "bounce.out", onUpdate: () => { applyKey(index); } }));
       });
       onVisibility();

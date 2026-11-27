@@ -29,7 +29,7 @@ const SkillsSection = () => {
       id="skills"
       className={showGrid
         ? "flex w-full min-h-screen flex-col justify-center py-24"
-        : "w-full h-screen md:h-[150dvh] pointer-events-none"}
+        : "w-full h-[110dvh] md:h-[150dvh] pointer-events-none"}
     >
       <SectionHeader
         id="skills"
@@ -37,7 +37,7 @@ const SkillsSection = () => {
         desc={showGrid ? `${Object.keys(SKILLS).length} technologies and skills · résumé + original keyboard` : `${Object.keys(SKILLS).length} interactive keys · hover, tap or press a key`}
         className={showGrid ? "static mb-14" : undefined}
       />
-      <ul className={showGrid ? "mx-auto grid w-full max-w-5xl grid-cols-2 gap-3 px-4 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5" : "sr-only"}>
+      <ul className={showGrid ? "mx-auto grid w-full max-w-6xl grid-cols-2 gap-3 px-4 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5" : "sr-only"}>
         {Object.values(SKILLS).map((skill) => (
           <li
             key={skill.name}
@@ -64,10 +64,10 @@ const SkillsSection = () => {
             <img
               src={skill.icon}
               alt={skill.label}
-              width={44}
-              height={44}
+              width={64}
+              height={64}
               loading="lazy"
-              className="relative size-9 object-contain drop-shadow-sm transition-transform duration-300 group-hover:scale-110 md:size-11"
+              className="relative size-14 object-contain drop-shadow-sm transition-transform duration-300 group-hover:scale-110 md:size-16"
             />
             <span className="relative w-full text-center text-xs leading-snug [overflow-wrap:anywhere] font-medium text-foreground/80 transition-colors group-hover:text-foreground md:text-sm">
               {skill.label}
