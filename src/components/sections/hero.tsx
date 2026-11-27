@@ -11,7 +11,8 @@ import {
 import { usePreloader } from "../preloader";
 import { BlurIn, BoxReveal } from "../reveal-animations";
 import ScrollDownIcon from "../scroll-down-icon";
-import { SiGithub, SiLinkedin } from "react-icons/si";
+import { SiGithub } from "react-icons/si";
+import { FaLinkedin } from "react-icons/fa"; // or "react-icons/fa6"
 import { config } from "@/data/config";
 
 import SectionWrapper from "../ui/section-wrapper";
@@ -96,7 +97,7 @@ const HeroSection = () => {
                   </Tooltip>
                   <div className="flex items-center h-full gap-2">
                     <Button asChild variant="outline" size="icon"><Link href={config.social.github} target="_blank" rel="noreferrer" aria-label="GitHub"><SiGithub size={22} /></Link></Button>
-                    <Button asChild variant="outline" size="icon"><Link href={config.social.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn"><SiLinkedin size={22} /></Link></Button>
+                    <Button asChild variant="outline" size="icon"><Link href={config.social.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn"><FaLinkedin size={22} /></Link></Button>
                   </div>
                 </div>
               </div>
