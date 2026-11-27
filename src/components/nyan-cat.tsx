@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
@@ -77,6 +78,7 @@ const AnimatedDiv = ({
       y: randY,
       transition: { duration: 5, ease: "linear" },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [controls]);
 
   const handlePause = () => {

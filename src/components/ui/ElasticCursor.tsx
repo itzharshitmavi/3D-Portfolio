@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/refs */
+/* eslint-disable react-hooks/immutability */
 /**
  * Disclaimer: This component is not entirely my own
  */
@@ -177,12 +180,12 @@ function ElasticCursor() {
       const pullX = clamp(
         (pointer.x - b.cx) * TARGET_PULL,
         -TARGET_MAX_PULL,
-        TARGET_MAX_PULL
+        TARGET_MAX_PULL,
       );
       const pullY = clamp(
         (pointer.y - b.cy) * TARGET_PULL,
         -TARGET_MAX_PULL,
-        TARGET_MAX_PULL
+        TARGET_MAX_PULL,
       );
       active.offX = lerp(active.offX, pullX, TARGET_EASE);
       active.offY = lerp(active.offY, pullY, TARGET_EASE);
@@ -195,12 +198,12 @@ function ElasticCursor() {
       const leadX = clamp(
         (pointer.x - b.cx) * CURSOR_PARALLAX,
         -CURSOR_MAX_LEAD,
-        CURSOR_MAX_LEAD
+        CURSOR_MAX_LEAD,
       );
       const leadY = clamp(
         (pointer.y - b.cy) * CURSOR_PARALLAX,
         -CURSOR_MAX_LEAD,
-        CURSOR_MAX_LEAD
+        CURSOR_MAX_LEAD,
       );
       const tx = b.cx + active.offX + leadX;
       const ty = b.cy + active.offY + leadY;
@@ -267,7 +270,7 @@ function ElasticCursor() {
       });
 
       const hide = !!(e.target as Element | null)?.closest?.(
-        '[data-no-custom-cursor="true"]'
+        '[data-no-custom-cursor="true"]',
       );
       isHiddenRef.current = hide;
       document.body.style.cursor = hide ? "auto" : "";
@@ -371,7 +374,7 @@ function ElasticCursor() {
         ref={jellyRef}
         id={"jelly-id"}
         className={cn(
-          "jelly-blob fixed left-0 top-0 border-2 border-black dark:border-white pointer-events-none will-change-transform"
+          "jelly-blob fixed left-0 top-0 border-2 border-black dark:border-white pointer-events-none will-change-transform",
         )}
         style={{
           width: CURSOR_DIAMETER,

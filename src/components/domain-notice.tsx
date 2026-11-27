@@ -15,6 +15,7 @@ export default function DomainNotice() {
   React.useEffect(() => {
     if (!legacyHost) return;
     try {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShow(localStorage.getItem(DISMISS_KEY) !== "1");
     } catch {
       setShow(true);
@@ -38,7 +39,7 @@ export default function DomainNotice() {
       className={cn(
         "fixed bottom-4 left-1/2 z-50 w-[min(92vw,22rem)] -translate-x-1/2 sm:left-4 sm:translate-x-0",
         "rounded-xl border border-border bg-background/95 p-3 pr-9 shadow-lg backdrop-blur",
-        "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2"
+        "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2",
       )}
     >
       <p className="text-xs leading-relaxed text-muted-foreground">

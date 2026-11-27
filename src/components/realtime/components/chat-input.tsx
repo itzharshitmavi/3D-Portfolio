@@ -1,9 +1,14 @@
+/* eslint-disable react-hooks/preserve-manual-memoization */
 import React, { useRef, useCallback, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Send, Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { THEME } from "../constants";
-import { SlashCommandMenu, getFilteredCommands, processSlashCommand } from "./slash-command-menu";
+import {
+  SlashCommandMenu,
+  getFilteredCommands,
+  processSlashCommand,
+} from "./slash-command-menu";
 import type { ProcessedCommand } from "./slash-command-menu";
 import { ReplyPreview } from "./reply-preview";
 import type { SlashCommand } from "./slash-command-menu";
@@ -24,7 +29,17 @@ interface ChatInputProps {
 const MAX_LENGTH = 500;
 const MAX_ROWS = 5;
 
-export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", replyTarget, onCancelReply, editTarget, onCancelEdit, onEditLastMessage, rateLimitedUntil }: ChatInputProps) => {
+export const ChatInput = ({
+  onSendMessage,
+  onTyping,
+  placeholder = "Message",
+  replyTarget,
+  onCancelReply,
+  editTarget,
+  onCancelEdit,
+  onEditLastMessage,
+  rateLimitedUntil,
+}: ChatInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [showCommands, setShowCommands] = useState(false);
   const [commandQuery, setCommandQuery] = useState("");
@@ -32,7 +47,11 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
   const [rateLimitSeconds, setRateLimitSeconds] = useState(0);
 
   useEffect(() => {
-    if (!rateLimitedUntil) { setRateLimitSeconds(0); return; }
+    if (!rateLimitedUntil) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setRateLimitSeconds(0);
+      return;
+    }
     const tick = () => {
       const remaining = Math.ceil((rateLimitedUntil - Date.now()) / 1000);
       setRateLimitSeconds(remaining > 0 ? remaining : 0);
@@ -51,9 +70,10 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
     if (editTarget && textareaRef.current) {
       textareaRef.current.value = editTarget.content;
       textareaRef.current.focus();
+      // eslint-disable-next-line react-hooks/immutability
       resizeTextarea();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editTarget]);
 
   const resizeTextarea = useCallback(() => {
@@ -136,15 +156,20 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
       const filtered = getFilteredCommands(commandQuery);
       if (e.key === "ArrowUp") {
         e.preventDefault();
-        setSelectedIndex(prev => (prev - 1 + filtered.length) % filtered.length);
+        setSelectedIndex(
+          (prev) => (prev - 1 + filtered.length) % filtered.length,
+        );
         return;
       }
       if (e.key === "ArrowDown") {
         e.preventDefault();
-        setSelectedIndex(prev => (prev + 1) % filtered.length);
+        setSelectedIndex((prev) => (prev + 1) % filtered.length);
         return;
       }
-      if ((e.key === "Tab" || (e.key === "Enter" && !e.shiftKey)) && filtered.length > 0) {
+      if (
+        (e.key === "Tab" || (e.key === "Enter" && !e.shiftKey)) &&
+        filtered.length > 0
+      ) {
         e.preventDefault();
         handleCommandSelect(filtered[selectedIndex]);
         return;
@@ -168,7 +193,12 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
     }
 
     // Up arrow with empty input → edit last own message
-    if (e.key === "ArrowUp" && !textareaRef.current?.value && !editTarget && onEditLastMessage) {
+    if (
+      e.key === "ArrowUp" &&
+      !textareaRef.current?.value &&
+      !editTarget &&
+      onEditLastMessage
+    ) {
       e.preventDefault();
       onEditLastMessage();
       return;
@@ -190,18 +220,22 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
         />
       )}
       {rateLimitSeconds > 0 && !editTarget && (
-        <div className={cn(
-          "flex items-center gap-2 px-3 py-2 rounded-t-lg text-xs font-medium",
-          "bg-red-500/10 text-red-500 dark:text-red-400",
-        )}>
+        <div
+          className={cn(
+            "flex items-center gap-2 px-3 py-2 rounded-t-lg text-xs font-medium",
+            "bg-red-500/10 text-red-500 dark:text-red-400",
+          )}
+        >
           <span>Slow down — you can send again in {rateLimitSeconds}s</span>
         </div>
       )}
       {editTarget && (
-        <div className={cn(
-          "flex items-center gap-2 px-3 py-2 rounded-t-lg text-xs font-medium",
-          "bg-[#5865f2]/10 text-[#5865f2] dark:text-[#8891f2]",
-        )}>
+        <div
+          className={cn(
+            "flex items-center gap-2 px-3 py-2 rounded-t-lg text-xs font-medium",
+            "bg-[#5865f2]/10 text-[#5865f2] dark:text-[#8891f2]",
+          )}
+        >
           <span>Editing message</span>
           <span className={cn("ml-auto text-[10px]", THEME.text.secondary)}>
             Esc to cancel
@@ -209,7 +243,12 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
         </div>
       )}
       <div
-        className={cn("relative rounded-lg p-2.5 flex items-center gap-2 cursor-text", THEME.bg.tertiary, (replyTarget || editTarget || rateLimitSeconds > 0) && "rounded-t-none")}
+        className={cn(
+          "relative rounded-lg p-2.5 flex items-center gap-2 cursor-text",
+          THEME.bg.tertiary,
+          (replyTarget || editTarget || rateLimitSeconds > 0) &&
+            "rounded-t-none",
+        )}
         // textarea is one line tall -> padding clicks focus it too
         onMouseDown={(e) => {
           if (e.target !== e.currentTarget) return;
@@ -229,7 +268,8 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
           autoFocus
           className={cn(
             "flex-1 bg-transparent border-none outline-none font-medium min-w-0 resize-none leading-5 overflow-hidden p-0 h-5",
-            THEME.text.primary, THEME.text.placeholder
+            THEME.text.primary,
+            THEME.text.placeholder,
           )}
           placeholder={editTarget ? "Edit your message" : placeholder}
           aria-label={editTarget ? "Edit your message" : placeholder}
@@ -243,7 +283,11 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
             <Button
               size="icon"
               variant="ghost"
-              className={cn("h-7 w-7 shrink-0", THEME.text.secondary, THEME.bg.itemHover)}
+              className={cn(
+                "h-7 w-7 shrink-0",
+                THEME.text.secondary,
+                THEME.bg.itemHover,
+              )}
               onClick={cancelEdit}
               title="Cancel edit"
               aria-label="Cancel edit"
@@ -265,7 +309,11 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
           <Button
             size="icon"
             variant="ghost"
-            className={cn("h-8 w-8 shrink-0", THEME.text.secondary, THEME.bg.itemHover)}
+            className={cn(
+              "h-8 w-8 shrink-0",
+              THEME.text.secondary,
+              THEME.bg.itemHover,
+            )}
             onClick={handleSend}
             aria-label="Send message"
           >

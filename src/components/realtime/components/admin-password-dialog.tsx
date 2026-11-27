@@ -12,12 +12,17 @@ interface AdminPasswordDialogProps {
   onSubmit: (password: string) => void;
 }
 
-export const AdminPasswordDialog = ({ isOpen, onClose, onSubmit }: AdminPasswordDialogProps) => {
+export const AdminPasswordDialog = ({
+  isOpen,
+  onClose,
+  onSubmit,
+}: AdminPasswordDialogProps) => {
   const [password, setPassword] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPassword("");
       setTimeout(() => inputRef.current?.focus(), 50);
     }
@@ -53,7 +58,9 @@ export const AdminPasswordDialog = ({ isOpen, onClose, onSubmit }: AdminPassword
       >
         <div className="flex items-center gap-2">
           <Shield className="w-5 h-5 text-amber-500" />
-          <h3 className={cn("text-base font-semibold", THEME.text.header)}>Admin Authentication</h3>
+          <h3 className={cn("text-base font-semibold", THEME.text.header)}>
+            Admin Authentication
+          </h3>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -67,7 +74,8 @@ export const AdminPasswordDialog = ({ isOpen, onClose, onSubmit }: AdminPassword
               "w-full px-3 py-2 rounded-lg border text-sm outline-none transition-colors",
               "bg-black/5 dark:bg-black/20 border-black/10 dark:border-white/10",
               "focus:border-[#5865f2] focus:ring-1 focus:ring-[#5865f2]",
-              THEME.text.primary, THEME.text.placeholder,
+              THEME.text.primary,
+              THEME.text.placeholder,
             )}
             autoComplete="off"
           />

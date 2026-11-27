@@ -49,7 +49,9 @@ const ScrollingPreview = ({
       const displayedHeight = vp.clientWidth * ratio; // height at bg-size "100% auto"
       const overflow = displayedHeight - vp.clientHeight;
       // Only pages meaningfully taller than the frame pan; the rest go "cover".
-      setScrollPx(overflow > vp.clientHeight * MIN_SCROLL_OVERFLOW ? overflow : 0);
+      setScrollPx(
+        overflow > vp.clientHeight * MIN_SCROLL_OVERFLOW ? overflow : 0,
+      );
     };
     img.onload = compute;
     img.src = src;
@@ -65,6 +67,7 @@ const ScrollingPreview = ({
   // instead of rendering a broken background.
   useEffect(() => {
     if (!bg) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setBgReady(false);
       return;
     }

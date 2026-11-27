@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useContext, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Users, Edit } from "lucide-react";
@@ -20,13 +21,23 @@ interface UserListProps {
   onEditProfile: () => void;
 }
 
-export const UserList = ({ users, socket, showUserList, onClose, onEditProfile }: UserListProps) => {
+export const UserList = ({
+  users,
+  socket,
+  showUserList,
+  onClose,
+  onEditProfile,
+}: UserListProps) => {
   const { setFollowingId } = useContext(SocketContext);
-  const sortedUsers = useMemo(() => [...users].sort((a, b) => {
-    if (a.socketId === socket?.id) return -1;
-    if (b.socketId === socket?.id) return 1;
-    return 0;
-  }), [users, socket?.id]);
+  const sortedUsers = useMemo(
+    () =>
+      [...users].sort((a, b) => {
+        if (a.socketId === socket?.id) return -1;
+        if (b.socketId === socket?.id) return 1;
+        return 0;
+      }),
+    [users, socket?.id],
+  );
 
   return (
     <AnimatePresence>
@@ -46,14 +57,23 @@ export const UserList = ({ users, socket, showUserList, onClose, onEditProfile }
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", bounce: 0, duration: 0.3 }}
-            className={cn("absolute inset-y-0 right-0 w-60 shadow-xl z-20 flex flex-col border-l", THEME.bg.secondary, THEME.border.primary)}
+            className={cn(
+              "absolute inset-y-0 right-0 w-60 shadow-xl z-20 flex flex-col border-l",
+              THEME.bg.secondary,
+              THEME.border.primary,
+            )}
           >
             <div className="p-4 pb-2">
-              <h3 className={cn("text-xs font-bold uppercase tracking-wide mb-2", THEME.text.secondary)}>
+              <h3
+                className={cn(
+                  "text-xs font-bold uppercase tracking-wide mb-2",
+                  THEME.text.secondary,
+                )}
+              >
                 Online — {users.length}
               </h3>
             </div>
-            <ScrollArea className="flex-1 px-2" data-lenis-prevent >
+            <ScrollArea className="flex-1 px-2" data-lenis-prevent>
               <div className="space-y-0.5 pb-4">
                 {sortedUsers.map((user) => (
                   <UserItem
@@ -91,7 +111,7 @@ const UserItem = ({
       className={cn(
         "group flex flex-col p-2 rounded transition-colors relative",
         THEME.bg.itemHover,
-        !isMe && "cursor-pointer"
+        !isMe && "cursor-pointer",
       )}
       onClick={() => {
         if (!isMe) {
@@ -105,14 +125,22 @@ const UserItem = ({
             src={getAvatarUrl(user.avatar)}
             alt={user.name}
             className="w-8 h-8 rounded-full"
-            style={{ backgroundColor: user.color || '#60a5fa' }}
+            style={{ backgroundColor: user.color || "#60a5fa" }}
           />
-          <div className={cn("absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2", THEME.border.status)} />
+          <div
+            className={cn(
+              "absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2",
+              THEME.border.status,
+            )}
+          />
         </div>
 
         <div className="flex-1 min-w-0">
           <div
-            className={cn("flex items-center justify-between", isMe && "cursor-pointer")}
+            className={cn(
+              "flex items-center justify-between",
+              isMe && "cursor-pointer",
+            )}
             onClick={(e) => {
               if (isMe) {
                 e.stopPropagation();
@@ -122,17 +150,31 @@ const UserItem = ({
           >
             <div className="flex gap-1 items-center">
               <span
-                className={cn("font-medium truncate text-sm", isMe ? THEME.text.header : cn(THEME.text.secondary, THEME.text.hover))}
+                className={cn(
+                  "font-medium truncate text-sm",
+                  isMe
+                    ? THEME.text.header
+                    : cn(THEME.text.secondary, THEME.text.hover),
+                )}
                 style={{ color: !isMe ? user.color : undefined }}
               >
                 {user.name}
               </span>
               {user.isAdmin && <AdminBadge />}
-              {isMe && <span className="bg-[#5865f2] text-white text-[10px] px-1 rounded font-bold">YOU</span>}
+              {isMe && (
+                <span className="bg-[#5865f2] text-white text-[10px] px-1 rounded font-bold">
+                  YOU
+                </span>
+              )}
             </div>
             {isMe ? (
-              <Button variant={'ghost'} size={'icon'} className="w-5 h-5">
-                <Edit className={cn("w-3 h-3 hover:text-[#060607] dark:hover:text-white", THEME.text.secondary)} />
+              <Button variant={"ghost"} size={"icon"} className="w-5 h-5">
+                <Edit
+                  className={cn(
+                    "w-3 h-3 hover:text-[#060607] dark:hover:text-white",
+                    THEME.text.secondary,
+                  )}
+                />
               </Button>
             ) : (
               <motion.div
@@ -144,7 +186,12 @@ const UserItem = ({
               </motion.div>
             )}
           </div>
-          <div className={cn("flex items-center gap-1 text-[10px]", THEME.text.secondary)}>
+          <div
+            className={cn(
+              "flex items-center gap-1 text-[10px]",
+              THEME.text.secondary,
+            )}
+          >
             <span className="truncate">{user.location}</span>
             <span>{user.flag}</span>
             <DeviceIcon deviceType={user.deviceType} />

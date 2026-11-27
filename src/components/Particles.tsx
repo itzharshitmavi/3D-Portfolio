@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 "use client";
 
 import React, { useRef, useEffect, useState } from "react";
@@ -49,7 +50,9 @@ export default function Particles({
   const rafId = useRef<number>(0);
   // Cap the device-pixel-ratio: a 3x screen otherwise triples the fill cost.
   const dpr =
-    typeof window !== "undefined" ? Math.min(window.devicePixelRatio, maxDpr) : 1;
+    typeof window !== "undefined"
+      ? Math.min(window.devicePixelRatio, maxDpr)
+      : 1;
 
   useEffect(() => {
     if (isBlogPost) return;
@@ -77,14 +80,17 @@ export default function Particles({
       window.removeEventListener("resize", initCanvas);
       document.removeEventListener("visibilitychange", onVisibility);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isBlogPost]);
 
   useEffect(() => {
     onMouseMove();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mousePosition.x, mousePosition.y]);
 
   useEffect(() => {
     initCanvas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh]);
 
   const initCanvas = () => {
@@ -166,7 +172,7 @@ export default function Particles({
         0,
         0,
         canvasSize.current.w,
-        canvasSize.current.h
+        canvasSize.current.h,
       );
     }
   };
@@ -185,7 +191,7 @@ export default function Particles({
     start1: number,
     end1: number,
     start2: number,
-    end2: number
+    end2: number,
   ): number => {
     const remapped =
       ((value - start1) * (end2 - start2)) / (end1 - start1) + start2;
@@ -204,7 +210,7 @@ export default function Particles({
       ];
       const closestEdge = edge.reduce((a, b) => Math.min(a, b));
       const remapClosestEdge = parseFloat(
-        remapValue(closestEdge, 0, 20, 0, 1).toFixed(2)
+        remapValue(closestEdge, 0, 20, 0, 1).toFixed(2),
       );
       if (remapClosestEdge > 1) {
         circle.alpha += 0.02;
@@ -245,7 +251,7 @@ export default function Particles({
             translateY: circle.translateY,
             alpha: circle.alpha,
           },
-          true
+          true,
         );
       }
     });
@@ -258,7 +264,7 @@ export default function Particles({
     <div
       className={cn(
         className,
-        "dark:bg-gradient-to-tl from-black via-zinc-600/20 to-black"
+        "dark:bg-gradient-to-tl from-black via-zinc-600/20 to-black",
       )}
       ref={canvasContainerRef}
       aria-hidden="true"

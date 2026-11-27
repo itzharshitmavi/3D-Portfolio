@@ -31,6 +31,7 @@ export default function Body({
   useEffect(() => {
     if (typeof window === "undefined") return;
     const { pathname, hash } = window.location;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCurrentHref(pathname + hash);
   }, [params]);
 
@@ -48,7 +49,7 @@ export default function Body({
           key={char + i}
         >
           {char === " " ? "\u00a0" : char}
-        </motion.span>
+        </motion.span>,
       );
     });
     return chars;
@@ -70,7 +71,7 @@ export default function Body({
             <motion.p
               className={cn(
                 "font-display rounded-lg",
-                currentHref !== href ? "text-muted-foreground" : "underline"
+                currentHref !== href ? "text-muted-foreground" : "underline",
               )}
               onClick={() => setIsActive(false)}
               onMouseOver={() => setSelectedLink({ isActive: true, index })}

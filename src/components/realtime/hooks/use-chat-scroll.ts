@@ -1,9 +1,15 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
 const BOTTOM_THRESHOLD = 40;
 
 const getViewport = (root: HTMLElement | null) =>
-  root?.querySelector<HTMLElement>('[data-radix-scroll-area-viewport]') ?? null;
+  root?.querySelector<HTMLElement>("[data-radix-scroll-area-viewport]") ?? null;
 
 const pinToBottom = (vp: HTMLElement) => {
   vp.scrollTop = vp.scrollHeight;
@@ -52,7 +58,10 @@ export const useChatScroll = (
   const snapshot = useRef({ scrollTop: 0, scrollHeight: 0 });
 
   const takeSnapshot = (vp: HTMLElement) => {
-    snapshot.current = { scrollTop: vp.scrollTop, scrollHeight: vp.scrollHeight };
+    snapshot.current = {
+      scrollTop: vp.scrollTop,
+      scrollHeight: vp.scrollHeight,
+    };
   };
 
   const scrollToBottom = useCallback((smooth = true) => {
@@ -62,16 +71,20 @@ export const useChatScroll = (
     setUnreads(0);
     setShowScrollButton(false);
     if (!vp) return;
-    vp.scrollTo({ top: vp.scrollHeight, behavior: smooth ? 'smooth' : 'auto' });
+    vp.scrollTo({ top: vp.scrollHeight, behavior: smooth ? "smooth" : "auto" });
   }, []);
 
   // before paint -> no flash of the top of the list on open
   useLayoutEffect(() => {
     if (!viewport) return;
-    const divider = viewport.querySelector<HTMLElement>(`[${UNREAD_DIVIDER_ATTR}]`);
+    const divider = viewport.querySelector<HTMLElement>(
+      `[${UNREAD_DIVIDER_ATTR}]`,
+    );
     if (divider) {
       // open at first unread, a bit of context above it
-      const top = divider.getBoundingClientRect().top - viewport.getBoundingClientRect().top;
+      const top =
+        divider.getBoundingClientRect().top -
+        viewport.getBoundingClientRect().top;
       scrollByPx(viewport, top - 48);
       isAtBottomRef.current = isNearBottom(viewport);
     } else {
@@ -97,7 +110,8 @@ export const useChatScroll = (
         lastSeenId.current = lastMsgIdRef.current;
       }
       // direction check: smooth scroll-to-bottom passes through "not at bottom" frames
-      else if (viewport.scrollTop < snapshot.current.scrollTop) isAtBottomRef.current = false;
+      else if (viewport.scrollTop < snapshot.current.scrollTop)
+        isAtBottomRef.current = false;
       takeSnapshot(viewport);
 
       setShowScrollButton(!isAtBottomRef.current);
@@ -109,11 +123,12 @@ export const useChatScroll = (
       if (isAtBottomRef.current) pinToBottom(viewport);
       takeSnapshot(viewport);
     });
-    if (viewport.firstElementChild) resizeObserver.observe(viewport.firstElementChild);
+    if (viewport.firstElementChild)
+      resizeObserver.observe(viewport.firstElementChild);
 
-    viewport.addEventListener('scroll', handleScroll, { passive: true });
+    viewport.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
-      viewport.removeEventListener('scroll', handleScroll);
+      viewport.removeEventListener("scroll", handleScroll);
       resizeObserver.disconnect();
     };
   }, [viewport]);
@@ -124,9 +139,18 @@ export const useChatScroll = (
     const prev = prevFirstMsgId.current;
     prevFirstMsgId.current = firstMsgId;
     const vp = viewportRef.current;
-    if (!vp || !prev || !firstMsgId || prev === firstMsgId || isAtBottomRef.current) return;
+    if (
+      !vp ||
+      !prev ||
+      !firstMsgId ||
+      prev === firstMsgId ||
+      isAtBottomRef.current
+    )
+      return;
     // absolute, not +=: idempotent if native scroll anchoring already adjusted
-    vp.scrollTop = snapshot.current.scrollTop + (vp.scrollHeight - snapshot.current.scrollHeight);
+    vp.scrollTop =
+      snapshot.current.scrollTop +
+      (vp.scrollHeight - snapshot.current.scrollHeight);
     takeSnapshot(vp);
   }, [firstMsgId]);
 
@@ -142,8 +166,9 @@ export const useChatScroll = (
     if (!prev || lastMsgIsMine || reading) lastSeenId.current = lastMsgId;
     if (!prev) return;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (lastMsgIsMine) scrollToBottom(true);
-    else if (!reading) setUnreads(n => n + 1);
+    else if (!reading) setUnreads((n) => n + 1);
   }, [lastMsgId, lastMsgIsMine, scrollToBottom]);
 
   return {

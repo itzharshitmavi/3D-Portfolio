@@ -3,11 +3,14 @@ import type { Socket } from "socket.io-client";
 
 export type ConnectionStatus = "connected" | "connecting" | "disconnected";
 
-export const useConnectionStatus = (socket: Socket | null): ConnectionStatus => {
+export const useConnectionStatus = (
+  socket: Socket | null,
+): ConnectionStatus => {
   const [status, setStatus] = useState<ConnectionStatus>("connecting");
 
   useEffect(() => {
     if (!socket) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStatus("disconnected");
       return;
     }

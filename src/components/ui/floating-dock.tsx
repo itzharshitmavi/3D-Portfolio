@@ -112,6 +112,7 @@ const FloatingDockDesktop = ({
     }
     return () => {
       controls.stop();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       if (timer.current) clearInterval(timer.current);
     };
   }, [showHint, reducedMotion, controls]);
@@ -126,7 +127,7 @@ const FloatingDockDesktop = ({
         className={cn(
           "flex gap-2 md:gap-4",
           "mx-auto h-16 items-end  rounded-2xl bg-white/30 dark:bg-black/50  px-4 pb-3",
-          className
+          className,
         )}
       >
         {items.map((item) => (
@@ -138,13 +139,11 @@ const FloatingDockDesktop = ({
           className="z-10 absolute t-0 w-full h-full pointer-events-none"
           onMouseEnter={() => setShowHint(false)}
         >
-          <div
-            className="relative w-full h-full flex items-center justify-center"
-          >
+          <div className="relative w-full h-full flex items-center justify-center">
             <motion.div
               className={cn(
                 "w-5 h-5 border-2 left-[50%] top-0 border-foreground rounded-full",
-                "translate-x-[-50px]"
+                "translate-x-[-50px]",
               )}
               initial={{ opacity: 0, x: -50 }}
               animate={controls}
@@ -181,7 +180,7 @@ function IconContainer({
   let heightTransformIcon = useTransform(
     distance,
     [-150, 0, 150],
-    [20, 40, 20]
+    [20, 40, 20],
   );
 
   let width = useSpring(widthTransform, {
@@ -211,7 +210,10 @@ function IconContainer({
   return (
     <motion.div
       ref={ref}
-      style={{ width: reducedMotion ? 40 : width, height: reducedMotion ? 40 : height }}
+      style={{
+        width: reducedMotion ? 40 : width,
+        height: reducedMotion ? 40 : height,
+      }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className="aspect-square rounded-full bg-secondary/30 flex items-center justify-center relative"
@@ -229,7 +231,10 @@ function IconContainer({
         )}
       </AnimatePresence>
       <motion.div
-        style={{ width: reducedMotion ? 20 : widthIcon, height: reducedMotion ? 20 : heightIcon }}
+        style={{
+          width: reducedMotion ? 20 : widthIcon,
+          height: reducedMotion ? 20 : heightIcon,
+        }}
         className="flex items-center justify-center"
       >
         {icon}

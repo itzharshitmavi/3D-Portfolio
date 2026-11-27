@@ -21,6 +21,7 @@ export default function MotionNudge() {
 
   React.useEffect(() => {
     try {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDismissed(localStorage.getItem(DISMISS_KEY) === "1");
     } catch {
       setDismissed(false);
@@ -46,7 +47,7 @@ export default function MotionNudge() {
       aria-live="polite"
       className={cn(
         "fixed bottom-4 left-1/2 z-50 w-[min(92vw,22rem)] -translate-x-1/2 sm:left-auto sm:right-4 sm:translate-x-0",
-        "rounded-xl border border-border bg-background/95 p-4 shadow-lg backdrop-blur"
+        "rounded-xl border border-border bg-background/95 p-4 shadow-lg backdrop-blur",
       )}
     >
       <button

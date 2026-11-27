@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "motion/react";
@@ -25,7 +26,11 @@ interface EditProfileModalProps {
   user: User;
   isOpen: boolean;
   onClose: () => void;
-  updateProfile: (data: { name: string; avatar: string; color: string }) => void;
+  updateProfile: (data: {
+    name: string;
+    avatar: string;
+    color: string;
+  }) => void;
 }
 
 export const EditProfileModal = ({
@@ -37,11 +42,15 @@ export const EditProfileModal = ({
   const [name, setName] = useState(user.name);
   const [avatarSeed, setAvatarSeed] = useState(user.avatar);
   const [color, setColor] = useState(user.color || COLORS[0]);
-  const avatarSeeds = useMemo(() => Array.from({ length: 100 }, (_, i) => (i + 1).toString()), []);
+  const avatarSeeds = useMemo(
+    () => Array.from({ length: 100 }, (_, i) => (i + 1).toString()),
+    [],
+  );
 
   // Reset state when opening
   useEffect(() => {
     if (isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setName(user.name);
       setAvatarSeed(user.avatar);
       setColor(user.color || COLORS[0]);
@@ -77,7 +86,7 @@ export const EditProfileModal = ({
         className={cn(
           "w-[400px] h-[600px] max-h-[85vh] p-4 rounded-xl shadow-2xl flex flex-col",
           "bg-white dark:bg-[#2b2d31] border border-white/10",
-          "ring-1 ring-black/5 dark:ring-white/10"
+          "ring-1 ring-black/5 dark:ring-white/10",
         )}
         onClick={(e) => e.stopPropagation()}
       >
@@ -88,11 +97,21 @@ export const EditProfileModal = ({
               src={getAvatarUrl(avatarSeed)}
               alt="Preview"
               className="w-12 h-12 rounded-full ring-2 ring-offset-2 ring-offset-white dark:ring-offset-[#2b2d31]"
-              style={{ backgroundColor: color, "--tw-ring-color": color } as React.CSSProperties}
+              style={
+                {
+                  backgroundColor: color,
+                  "--tw-ring-color": color,
+                } as React.CSSProperties
+              }
             />
           </div>
           <div className="flex-1 min-w-0">
-            <div className={cn("text-xs font-medium uppercase tracking-wide mb-1", THEME.text.secondary)}>
+            <div
+              className={cn(
+                "text-xs font-medium uppercase tracking-wide mb-1",
+                THEME.text.secondary,
+              )}
+            >
               Edit Profile
             </div>
             <input
@@ -103,7 +122,7 @@ export const EditProfileModal = ({
                 "w-full text-base font-semibold px-2 py-1 rounded-md border-none outline-none",
                 "bg-black/5 dark:bg-white/5 focus:bg-black/10 dark:focus:bg-white/10",
                 "transition-colors",
-                THEME.text.header
+                THEME.text.header,
               )}
               autoFocus
               onKeyDown={(e) => {
@@ -116,10 +135,18 @@ export const EditProfileModal = ({
 
         {/* Avatar selection */}
         <div className="mb-4 flex-1 flex flex-col min-h-0">
-          <div className={cn("text-xs font-medium uppercase tracking-wide mb-2", THEME.text.secondary)}>
+          <div
+            className={cn(
+              "text-xs font-medium uppercase tracking-wide mb-2",
+              THEME.text.secondary,
+            )}
+          >
             Avatar
           </div>
-          <ScrollArea className="flex-1 w-full rounded-lg border border-black/10 dark:border-white/10 bg-black/5 dark:bg-black/20" data-lenis-prevent>
+          <ScrollArea
+            className="flex-1 w-full rounded-lg border border-black/10 dark:border-white/10 bg-black/5 dark:bg-black/20"
+            data-lenis-prevent
+          >
             <div className="grid grid-cols-5 gap-1.5 p-2" data-lenis-prevent>
               {avatarSeeds.map((seed) => (
                 <button
@@ -128,7 +155,7 @@ export const EditProfileModal = ({
                     "rounded-full p-0.5 transition-all hover:scale-105 aspect-square",
                     avatarSeed === seed
                       ? "bg-[#5865f2] ring-2 ring-[#5865f2] scale-105"
-                      : "hover:bg-black/10 dark:hover:bg-white/10"
+                      : "hover:bg-black/10 dark:hover:bg-white/10",
                   )}
                   onClick={() => setAvatarSeed(seed)}
                 >
@@ -147,7 +174,12 @@ export const EditProfileModal = ({
 
         {/* Color selection */}
         <div className="mb-5 shrink-0">
-          <div className={cn("text-xs font-medium uppercase tracking-wide mb-2", THEME.text.secondary)}>
+          <div
+            className={cn(
+              "text-xs font-medium uppercase tracking-wide mb-2",
+              THEME.text.secondary,
+            )}
+          >
             Accent Color
           </div>
           <div className="flex flex-wrap gap-2 justify-center">
@@ -156,9 +188,15 @@ export const EditProfileModal = ({
                 key={c}
                 className={cn(
                   "w-7 h-7 rounded-full transition-all hover:scale-110",
-                  color === c && "ring-2 ring-offset-2 ring-offset-white dark:ring-offset-[#2b2d31] scale-110 shadow-lg"
+                  color === c &&
+                    "ring-2 ring-offset-2 ring-offset-white dark:ring-offset-[#2b2d31] scale-110 shadow-lg",
                 )}
-                style={{ backgroundColor: c, "--tw-ring-color": c } as React.CSSProperties}
+                style={
+                  {
+                    backgroundColor: c,
+                    "--tw-ring-color": c,
+                  } as React.CSSProperties
+                }
                 onClick={() => setColor(c)}
               />
             ))}
@@ -185,6 +223,6 @@ export const EditProfileModal = ({
         </div>
       </motion.div>
     </motion.div>,
-    document.body
+    document.body,
   );
 };

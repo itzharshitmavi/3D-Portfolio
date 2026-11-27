@@ -1,5 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useContext, useState, useEffect, useRef, useCallback } from "react";
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -33,7 +40,19 @@ import { THEME } from "./constants";
 import { getAvatarUrl } from "@/lib/avatar";
 
 const OnlineUsers = () => {
-  const { socket, users: _users, msgs, hasMoreMessages, loadingHistory, fetchOlderMessages, initStatus, fetchInitialMessages, sendMessage, resendMessage, discardMessage } = useContext(SocketContext);
+  const {
+    socket,
+    users: _users,
+    msgs,
+    hasMoreMessages,
+    loadingHistory,
+    fetchOlderMessages,
+    initStatus,
+    fetchInitialMessages,
+    sendMessage,
+    resendMessage,
+    discardMessage,
+  } = useContext(SocketContext);
   const { open: openGame } = useContext(GameContext);
   const users = Array.from(_users.values());
   const [showUserList, setShowUserList] = useState(false);
@@ -43,7 +62,7 @@ const OnlineUsers = () => {
   const [editTarget, setEditTarget] = useState<Message | null>(null);
   const [showAdminDialog, setShowAdminDialog] = useState(false);
 
-  const currentUser = users.find(u => u.socketId === socket?.id);
+  const currentUser = users.find((u) => u.socketId === socket?.id);
   const { toast } = useToast();
   const { playSendSound, playReceiveSound } = useSounds();
   const connectionStatus = useConnectionStatus(socket);
@@ -62,7 +81,9 @@ const OnlineUsers = () => {
       }
     };
     socket.on("warning", onWarning);
-    return () => { socket.off("warning", onWarning); };
+    return () => {
+      socket.off("warning", onWarning);
+    };
   }, [socket]);
 
   // Play send/receive sounds for regular messages
@@ -73,7 +94,8 @@ const OnlineUsers = () => {
       const lastMsg = msgs[msgs.length - 1];
       // same last msg = history prepend, not a new arrival
       const isNew = lastMsg?.id !== prevLastMsgId.current;
-      const isSystem = lastMsg && "type" in lastMsg && lastMsg.type === "system";
+      const isSystem =
+        lastMsg && "type" in lastMsg && lastMsg.type === "system";
       let isRecent = true;
       if (lastMsg?.createdAt) {
         const msgTime = new Date(lastMsg.createdAt).getTime();
@@ -81,16 +103,24 @@ const OnlineUsers = () => {
       }
 
       // own sends play on submit, not on pending/echo
-      const isMine = lastMsg && !isSystem && (lastMsg as Message).sessionId === currentUser?.id;
-      if (isNew && isSmallBatch && isRecent && lastMsg && !isSystem && !isMine) {
+      const isMine =
+        lastMsg &&
+        !isSystem &&
+        (lastMsg as Message).sessionId === currentUser?.id;
+      if (
+        isNew &&
+        isSmallBatch &&
+        isRecent &&
+        lastMsg &&
+        !isSystem &&
+        !isMine
+      ) {
         playReceiveSound();
       }
     }
     prevMsgsLength.current = msgs.length;
     prevLastMsgId.current = msgs[msgs.length - 1]?.id;
   }, [msgs, playReceiveSound, currentUser]);
-
-
 
   const lastMsg = msgs[msgs.length - 1];
   const {
@@ -102,14 +132,14 @@ const OnlineUsers = () => {
   } = useChatScroll(
     msgs[0]?.id ? String(msgs[0].id) : undefined,
     lastMsg?.id ? String(lastMsg.id) : undefined,
-    !!currentUser && lastMsg?.sessionId === currentUser.id
+    !!currentUser && lastMsg?.sessionId === currentUser.id,
   );
 
-  const {
-    typingUsers,
-    handleTyping,
-    getTypingText
-  } = useTyping(socket, currentUser, _users);
+  const { typingUsers, handleTyping, getTypingText } = useTyping(
+    socket,
+    currentUser,
+    _users,
+  );
 
   const handleEditLastMessage = useCallback(() => {
     if (!currentUser) return;
@@ -142,11 +172,19 @@ const OnlineUsers = () => {
     setReplyTarget(null);
   };
 
-  const updateProfile = ({ name, avatar, color }: { name: string; avatar: string, color?: string }) => {
+  const updateProfile = ({
+    name,
+    avatar,
+    color,
+  }: {
+    name: string;
+    avatar: string;
+    color?: string;
+  }) => {
     socket?.emit("update-user", {
       username: name,
       avatar,
-      color
+      color,
     });
     localStorage.setItem("username", name);
     localStorage.setItem("avatar", avatar);
@@ -157,7 +195,7 @@ const OnlineUsers = () => {
 
   // Feature 6: Keyboard shortcut Ctrl+/ to toggle chat
   const toggleOpen = useCallback(() => {
-    setIsOpen(prev => {
+    setIsOpen((prev) => {
       if (prev) setShowUserList(false);
       else fetchInitialMessages();
       return !prev;
@@ -186,7 +224,7 @@ const OnlineUsers = () => {
           if (!newOpen && isEditingProfile) return;
           setIsOpen(newOpen);
           if (newOpen) fetchInitialMessages();
-          if (!newOpen) setShowUserList(false)
+          if (!newOpen) setShowUserList(false);
         }}
       >
         <div className="flex items-center gap-2" data-no-custom-cursor="true">
@@ -198,9 +236,13 @@ const OnlineUsers = () => {
                     variant="ghost"
                     className={cn(
                       "mr-4 h-11 w-12 shadow-lg transition-all duration-300 z-50 p-0",
-                      "bg-background/20 hover:bg-background/80 backdrop-blur-sm border-2 border-white/30 rounded-lg"
+                      "bg-background/20 hover:bg-background/80 backdrop-blur-sm border-2 border-white/30 rounded-lg",
                     )}
-                    aria-label={unreads > 0 ? `Open chat, ${unreads} unread` : `Open chat, ${users.length} online`}
+                    aria-label={
+                      unreads > 0
+                        ? `Open chat, ${unreads} unread`
+                        : `Open chat, ${users.length} online`
+                    }
                   >
                     <div className="relative flex items-center justify-center w-full h-full">
                       <Users2 className="w-6 h-6" />
@@ -213,7 +255,9 @@ const OnlineUsers = () => {
                 </PopoverTrigger>
               </TooltipTrigger>
               <TooltipContent side="left">
-                <p>Chat <kbd className="ml-1 text-[10px] opacity-60">Ctrl+/</kbd></p>
+                <p>
+                  Chat <kbd className="ml-1 text-[10px] opacity-60">Ctrl+/</kbd>
+                </p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -223,28 +267,49 @@ const OnlineUsers = () => {
           className={cn(
             "w-80 min-h-[400px] sm:w-96 p-0 border-none shadow-2xl overflow-hidden rounded-xl mr-4 mb-4 flex flex-col",
             THEME.bg.primary,
-            THEME.text.primary
+            THEME.text.primary,
           )}
           side="top"
           data-no-custom-cursor="true"
           onEscapeKeyDown={(e) => e.preventDefault()}
         >
           {/* Header */}
-          <div className={cn("h-12 flex items-center justify-between px-4 shadow-sm border-b shrink-0", THEME.bg.secondary, THEME.border.primary)}>
-            <div className={cn("flex items-center gap-2 font-semibold", THEME.text.header)}>
+          <div
+            className={cn(
+              "h-12 flex items-center justify-between px-4 shadow-sm border-b shrink-0",
+              THEME.bg.secondary,
+              THEME.border.primary,
+            )}
+          >
+            <div
+              className={cn(
+                "flex items-center gap-2 font-semibold",
+                THEME.text.header,
+              )}
+            >
               <Hash className={cn("w-5 h-5", THEME.text.secondary)} />
               <span>general</span>
               {/* Feature 2: Connection status indicator */}
               <div className="flex items-center gap-1.5">
-                <div className={cn(
-                  "w-2 h-2 rounded-full",
-                  connectionStatus === "connected" && "bg-green-500",
-                  connectionStatus === "connecting" && "bg-yellow-500 animate-pulse",
-                  connectionStatus === "disconnected" && "bg-red-500",
-                )} />
+                <div
+                  className={cn(
+                    "w-2 h-2 rounded-full",
+                    connectionStatus === "connected" && "bg-green-500",
+                    connectionStatus === "connecting" &&
+                      "bg-yellow-500 animate-pulse",
+                    connectionStatus === "disconnected" && "bg-red-500",
+                  )}
+                />
                 {connectionStatus !== "connected" && (
-                  <span className={cn("text-[10px] font-normal", THEME.text.secondary)}>
-                    {connectionStatus === "connecting" ? "Connecting..." : "Disconnected"}
+                  <span
+                    className={cn(
+                      "text-[10px] font-normal",
+                      THEME.text.secondary,
+                    )}
+                  >
+                    {connectionStatus === "connecting"
+                      ? "Connecting..."
+                      : "Disconnected"}
                   </span>
                 )}
               </div>
@@ -258,7 +323,7 @@ const OnlineUsers = () => {
                     "h-9 w-9 p-0 gap-2 transition-colors rounded-full",
                     THEME.bg.hover,
                     THEME.text.secondary,
-                    "hover:text-[#060607] dark:hover:text-white"
+                    "hover:text-[#060607] dark:hover:text-white",
                   )}
                   onClick={() => setIsEditingProfile(true)}
                   title="Edit Profile"
@@ -269,7 +334,9 @@ const OnlineUsers = () => {
                       src={getAvatarUrl(currentUser.avatar)}
                       alt=""
                       className="w-full h-full rounded-full ring-1 ring-black/10 dark:ring-white/10"
-                      style={{ backgroundColor: currentUser.color || '#60a5fa' }}
+                      style={{
+                        backgroundColor: currentUser.color || "#60a5fa",
+                      }}
                     />
                     <div className="absolute -bottom-1 -right-1 bg-[#5865f2] rounded-full border-2 border-[var(--bg-primary)]">
                       <Settings className="w-3 h-3 text-white" />
@@ -285,7 +352,7 @@ const OnlineUsers = () => {
                   "h-9 w-9 p-0 gap-2 transition-colors rounded-full",
                   THEME.bg.hover,
                   THEME.text.secondary,
-                  "hover:text-red-500 dark:hover:text-red-400"
+                  "hover:text-red-500 dark:hover:text-red-400",
                 )}
                 onClick={() => {
                   setIsOpen(false);
@@ -307,24 +374,28 @@ const OnlineUsers = () => {
                   THEME.bg.hover,
                   `hover:${THEME.text.header.replace("text-", "text-")} `,
                   "hover:text-[#060607] dark:hover:text-white",
-                  showUserList && cn(THEME.text.header, THEME.bg.active)
+                  showUserList && cn(THEME.text.header, THEME.bg.active),
                 )}
                 onClick={() => setShowUserList(!showUserList)}
                 aria-label={`${users.length} online, show user list`}
                 aria-pressed={showUserList}
               >
                 <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 bg-green-500 rounded-full" aria-label="Online" role="status" />
-                  <span>
-                    {users.length}
-                  </span>
+                  <div
+                    className="w-2 h-2 bg-green-500 rounded-full"
+                    aria-label="Online"
+                    role="status"
+                  />
+                  <span>{users.length}</span>
                 </div>
                 <Users className="w-5 h-5" />
               </Button>
             </div>
           </div>
 
-          <div className={cn("relative flex flex-col flex-1", THEME.bg.primary)}>
+          <div
+            className={cn("relative flex flex-col flex-1", THEME.bg.primary)}
+          >
             <ChatMessageList
               msgs={msgs}
               users={users}
@@ -365,7 +436,6 @@ const OnlineUsers = () => {
               onEditProfile={() => setIsEditingProfile(true)}
             />
           </div>
-
         </PopoverContent>
       </Popover>
 
